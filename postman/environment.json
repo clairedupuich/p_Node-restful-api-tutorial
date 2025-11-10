@@ -1,0 +1,21 @@
+{
+	"id": "57deab2d-6755-4d43-bdc3-61b0c50bef2d",
+	"name": "API Tutoriel Academind Copy",
+	"values": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:3001",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "lastId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-11-10T14:09:03.358Z",
+	"_postman_exported_using": "Postman/11.70.5"
+}

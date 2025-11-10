@@ -1,0 +1,324 @@
+{
+	"info": {
+		"_postman_id": "65d280e4-c780-4216-b0f9-ff76615225f7",
+		"name": "API Tutoriel Academind Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49499368",
+		"_collection_link": "https://clairedupuich9-4388317.postman.co/workspace/Claire-Dupuich's-Workspace~7bf9e952-3981-4c9a-8f68-c856e001f3f0/collection/49499368-65d280e4-c780-4216-b0f9-ff76615225f7?action=share&source=collection_link&creator=49499368"
+	},
+	"item": [
+		{
+			"name": "get  items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Vérifier que le code HTTP est 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/produits",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"produits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"pm.environment.set(\"lastId\", jsonData.produit.id);\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"//Vérifier que le code de retour HTTP est 201.\r",
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"//Vérifier que la réponse est au format JSON.\r",
+							"pm.test(\"Response is JSON\", function () {  \r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//Vérifier que la réponse contient un champ 'id'.\r",
+							"pm.test(\"Response contains 'id' field\", function () {\r",
+							"    pm.expect(jsonData.produit).to.have.property('id');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " { \"name\":\"pomme\", \r\n \"description\": \"rouge, 6 dans une boite\", \r\n \"price\" : \"3\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/creer",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"creer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get items by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//\r",
+							"pm.test(\"Response has an ID\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property('id');\r",
+							"    pm.expect(jsonData.id).to.be.a('string');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"GET returns correct item structure\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"\r",
+							"    // 检查响应结构是否包含必要字段\r",
+							"    pm.expect(jsonData).to.have.property(\"id\");\r",
+							"\r",
+							"\r",
+							"    // 确认 id 与环境变量匹配\r",
+							"    const expectedId = pm.environment.get(\"lastId\");\r",
+							"    pm.expect(jsonData.id).to.eql(expectedId);\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/produitbyid/{{lastId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"produitbyid",
+						"{{lastId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update items",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"})\r",
+							"//Vérifier que la réponse HTTP renvoie 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Item has correct values\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.eql(pm.environment.get(\"lastId\"));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"name\":\"euf\", \r\n \"description\": \"rouge, 6 dans une boite\", \r\n \"price\" : \"1\"\r\n }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/modif/{{lastId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"modif",
+						"{{lastId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Supprimer items by id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"//Vérifier que la réponse HTTP renvoie 204\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/items/{{lastId}}",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"items",
+						"{{lastId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": ""
+		}
+	]
+}
